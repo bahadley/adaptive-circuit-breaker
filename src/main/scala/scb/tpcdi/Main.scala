@@ -19,6 +19,20 @@ object Main extends App {
           terminationMessage = PoisonPill,
           settings = ClusterSingletonManagerSettings(system).withRole("da")),
         name = "metrics-listener")
+
+      system.actorOf(
+        ClusterSingletonManager.props(
+          singletonProps = Props(classOf[DataAccess]),
+          terminationMessage = PoisonPill,
+          settings = ClusterSingletonManagerSettings(system).withRole("da")),
+        name = "data-access")
+
+      system.actorOf(
+        ClusterSingletonManager.props(
+          singletonProps = Props(classOf[TaxRateProducer]),
+          terminationMessage = PoisonPill,
+          settings = ClusterSingletonManagerSettings(system).withRole("da")),
+        name = "taxrate-producer")
     }
   }
 }
