@@ -1,1 +1,1 @@
-### Demo of Akka Stream
+### Demo of an adaptive circuit breaker
