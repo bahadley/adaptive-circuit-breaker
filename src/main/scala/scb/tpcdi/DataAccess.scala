@@ -16,9 +16,12 @@ class DataAccess extends Actor with ActorLogging {
   val cb =
     new CircuitBreaker(
       context.system.scheduler,
-      maxFailures = 1,
-      callTimeout = 1.second,
-      resetTimeout = 1.minute).onOpen(notifyMeOnOpen())
+      maxFailures = 5,
+      callTimeout = 2.second,
+      resetTimeout = 1.minute)
+        .onOpen(notifyOpen())
+        .onHalfOpen(notifyHalfOpen())
+        .onClose(notifyClose())
 
   override def preStart(): Unit = {
     db = Some(Database.forConfig("tpcdi", ConfigFactory.load()))
@@ -48,8 +51,14 @@ class DataAccess extends Actor with ActorLogging {
     sqlu"""insert into taxrate (tx_id, tx_name, tx_rate)
       values (${tx.tx_id}, ${tx.tx_name}, ${tx.tx_rate})"""
 
-  def notifyMeOnOpen(): Unit =
-    log.warning("CircuitBreaker is now open, and will not close for one minute")
+  def notifyOpen(): Unit =
+    log.warning("CircuitBreaker is now open")
+
+  def notifyHalfOpen(): Unit =
+    log.warning("CircuitBreaker is now half open")
+
+  def notifyClose(): Unit =
+    log.warning("CircuitBreaker is now closed")
 
   val ERR_MSG_DB = "Connection pool is uninitialized" 
 }

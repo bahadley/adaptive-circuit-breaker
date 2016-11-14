@@ -62,6 +62,17 @@ class CircuitBreaker(
   def onHalfOpen(callback: ⇒ Unit): CircuitBreaker = onHalfOpen(new Runnable { def run = callback })
 
   /**
+   * JavaAPI for onHalfOpen
+   *
+   * @param callback Handler to be invoked on state change
+   * @return CircuitBreaker for fluent usage
+   */
+  def onHalfOpen(callback: Runnable): CircuitBreaker = {
+    HalfOpen addListener callback
+    this
+  }
+
+  /**
    * Adds a callback to execute when circuit breaker state closes
    *
    * The callback is run in the [[scala.concurrent.ExecutionContext]] supplied in the constructor.
@@ -70,6 +81,17 @@ class CircuitBreaker(
    * @return ModCircuitBreaker for fluent usage
    */
   def onClose(callback: ⇒ Unit): CircuitBreaker = onClose(new Runnable { def run = callback })
+
+  /**
+   * JavaAPI for onClose
+   *
+   * @param callback Handler to be invoked on state change
+   * @return CircuitBreaker for fluent usage
+   */
+  def onClose(callback: Runnable): CircuitBreaker = {
+    Closed addListener callback
+    this
+  }
 
   /**
    * Helper method for access to underlying state via Unsafe
