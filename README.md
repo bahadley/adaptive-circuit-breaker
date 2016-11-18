@@ -1,5 +1,7 @@
 ### Demo of an adaptive circuit breaker
 
+Work in progress ...
+
 ### How do I run this?
 
 Use two terminals on a single host.
