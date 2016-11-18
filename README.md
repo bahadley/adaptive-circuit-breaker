@@ -9,7 +9,7 @@ Use two terminals on a single host.
 In one terminal run:
 
 ```
-$ sbt -DPORT=2551 -DHOST=127.0.0.1 -Dconfig.resource=/da-node.conf run
+$ sbt -DPORT=2551 -DHOST=127.0.0.1 -Dconfig.resource=/data-ingestion-node.conf run
 ```
 
 In the second terminal run:
