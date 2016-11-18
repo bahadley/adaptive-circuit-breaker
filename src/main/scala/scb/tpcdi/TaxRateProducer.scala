@@ -20,7 +20,7 @@ class TaxRateProducer extends Actor with ActorLogging {
 
   def receive = {
     case "tick" => 
-      ask(context.actorSelection("/user/data-access/singleton"), nextTaxRate()) onFailure {
+      ask(context.actorSelection("/user/dataaccess/singleton"), nextTaxRate()) onFailure {
         case e => log.error("Error: {}", e)
       }
   }

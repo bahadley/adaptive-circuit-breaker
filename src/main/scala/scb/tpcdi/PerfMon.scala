@@ -7,7 +7,7 @@ import akka.cluster.metrics.{ClusterMetricsChanged, ClusterMetricsExtension, Nod
 import akka.cluster.metrics.StandardMetrics.Cpu
      
 
-class MetricsListener extends Actor with ActorLogging {
+class PerfMon extends Actor with ActorLogging {
 
   val cluster = Cluster(context.system)
   val extension = ClusterMetricsExtension(context.system)

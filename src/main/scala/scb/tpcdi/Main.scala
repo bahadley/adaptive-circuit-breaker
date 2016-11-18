@@ -11,28 +11,28 @@ object Main extends App {
 
   val roles = system.settings.config.getStringList("akka.cluster.roles")
 
-  if(roles.contains("da")) {
+  if(roles.contains("data-ingestion")) {
     Cluster(system).registerOnMemberUp {
       system.actorOf(
         ClusterSingletonManager.props(
-          singletonProps = Props(classOf[MetricsListener]),
+          singletonProps = Props(classOf[PerfMon]),
           terminationMessage = PoisonPill,
-          settings = ClusterSingletonManagerSettings(system).withRole("da")),
-        name = "metrics-listener")
+          settings = ClusterSingletonManagerSettings(system).withRole("data-ingestion")),
+        name = "perfmon")
 
       system.actorOf(
         ClusterSingletonManager.props(
           singletonProps = Props(classOf[DataAccess]),
           terminationMessage = PoisonPill,
-          settings = ClusterSingletonManagerSettings(system).withRole("da")),
-        name = "data-access")
+          settings = ClusterSingletonManagerSettings(system).withRole("data-ingestion")),
+        name = "dataaccess")
 
       system.actorOf(
         ClusterSingletonManager.props(
           singletonProps = Props(classOf[TaxRateProducer]),
           terminationMessage = PoisonPill,
-          settings = ClusterSingletonManagerSettings(system).withRole("da")),
-        name = "taxrate-producer")
+          settings = ClusterSingletonManagerSettings(system).withRole("data-ingestion")),
+        name = "taxrateproducer")
     }
   }
 }
