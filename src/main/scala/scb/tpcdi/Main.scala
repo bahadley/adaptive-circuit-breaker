@@ -15,10 +15,10 @@ object Main extends App {
     Cluster(system).registerOnMemberUp {
       system.actorOf(
         ClusterSingletonManager.props(
-          singletonProps = Props(classOf[PerfMon]),
+          singletonProps = Props(classOf[AdmissionControl]),
           terminationMessage = PoisonPill,
           settings = ClusterSingletonManagerSettings(system).withRole("data-ingestion")),
-        name = "perfmon")
+        name = "admissioncontrol")
 
       system.actorOf(
         ClusterSingletonManager.props(
